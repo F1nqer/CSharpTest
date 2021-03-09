@@ -8,14 +8,16 @@ namespace OopNachalo
 {
     class Lift {
         int maxFloor;
-        List<Human> People = new List<Human>();
-        List<Human> inLift = new List<Human>();
-        List<int> floorQueue = new List<int>();
+        List<Human> People = new List<Human>(); //список всех людей в здании
+        List<Human> inLift = new List<Human>();// список людей в лифте
+        List<int> floorQueue = new List<int>(); //очередь этажей для лифта
         int maxWeight;
-        int activeFloor;
-        bool door;
+        int activeFloor; //активный этаж
+        bool door; //дверь открыта или закрыта
         bool up;
-
+        //бегу по циклу, пока не закончится очередь
+        //лифт едет вверх до максимального этажа, учитывая очередь
+        //впускает и выпускает людей сразу как доезжает до какого-то этажа
         public void go()
         {/*
             People.OrderBy(x => x.onFloor).ToList();
@@ -28,9 +30,11 @@ namespace OopNachalo
             {
                 if(up == true)
                 {
-                    for(int i = activeFloor; i<=maxFloor; i++)
+                    for(int i = activeFloor; i<=maxFloor; i++) 
+                        //бежим по всем этажам
                     {
                         if (floorQueue.Contains(i)) {
+                            //проверяем этаж с очередью
                             if (i == maxFloor)
                             {
                                 up = false;
@@ -101,15 +105,16 @@ namespace OopNachalo
             door = false;
             Console.WriteLine("Doors close");
         }
-
+        //впускаем людей, добавляем в список лифта всех, кто стоит и ждёт на этом этаже
+        //добавляем всё в очередь и сортируем для удобства
         void comeIn()
         {
             openDoor();
-            inLift.AddRange(People.FindAll(x => x.onFloor == activeFloor));
-            People.RemoveAll(x => x.onFloor == activeFloor);
+            inLift.AddRange(People.FindAll(x => x.onFloor == activeFloor));//добавляем всех в лифт, кто на этом этаже
+            People.RemoveAll(x => x.onFloor == activeFloor);//удаляем людей из общего списка, чтобы не повторялось
             foreach(Human i in inLift)
             {
-                floorQueue.Append(i.goFloor);
+                floorQueue.Append(i.goFloor);//добавляем в очередь нужные этажи
             }
             floorQueue = floorQueue.Distinct().ToList();
             floorQueue.Sort();
@@ -117,11 +122,12 @@ namespace OopNachalo
             closeDoor();
         }
 
+        //выпускаем всех кому надо и удаляем их значения из очереди
         void comeOut()
         {
             openDoor();
-            inLift.RemoveAll(x => x.goFloor == activeFloor);
-            floorQueue.RemoveAll(x => x == activeFloor);
+            inLift.RemoveAll(x => x.goFloor == activeFloor); //выгоняем людей на том этаже, на котором они планировали выйти
+            floorQueue.RemoveAll(x => x == activeFloor);//удаляем из очереди
             floorQueue = floorQueue.Distinct().ToList();
             floorQueue.Sort();
             Console.WriteLine("All out lift");
@@ -176,7 +182,7 @@ namespace OopNachalo
             Human d = new Human("d", 30, 1, 8);
             Human e = new Human("e", 120, 9, 1);
             List<Human> People = new List<Human>() { a, b, c, d, e };
-
+            //почему-то не пашет, не проходит через условные операторы в цикле функции GO
             Lift start = new Lift(1200, 10, 3, People);
             start.go();
             Console.ReadKey();
