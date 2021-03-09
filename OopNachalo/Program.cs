@@ -23,7 +23,8 @@ namespace OopNachalo
             People.RemoveAll(x => x.onFloor == activeFloor);
             activeFloor = floorQueue.Find(x => x<activeFloor);
             */
-            while (floorQueue.Any())
+            Console.WriteLine("go!");
+            while(true)
             {
                 if(up == true)
                 {
@@ -80,7 +81,12 @@ namespace OopNachalo
                         }
                     }
                 }
+                if (!floorQueue.Any())
+                {
+                    break;
+                }
             }
+            
         }
 
        
@@ -128,7 +134,7 @@ namespace OopNachalo
             this.maxWeight = maxWeight;
             this.activeFloor = activeFloor;
             this.People = People;
-            foreach (Human i in test)
+            foreach (Human i in People)
             {
                 floorQueue.Append(i.onFloor);
             }
@@ -143,6 +149,7 @@ namespace OopNachalo
                 up = true;
             }
             Console.WriteLine("Ia zhivoi!");
+            closeDoor();
         }
     }
     class Human {
@@ -167,9 +174,11 @@ namespace OopNachalo
             Human b = new Human("b", 90, 5, 9);
             Human c = new Human("c", 70, 3, 5);
             Human d = new Human("d", 30, 1, 8);
-            List<Human> People = new List<Human>() { a, b, c, d };
+            Human e = new Human("e", 120, 9, 1);
+            List<Human> People = new List<Human>() { a, b, c, d, e };
 
-            new Lift(1200, 10, 3, People).go();
+            Lift start = new Lift(1200, 10, 3, People);
+            start.go();
             Console.ReadKey();
         }
     }
