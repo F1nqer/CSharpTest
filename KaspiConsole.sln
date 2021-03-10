@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaspiConsole", "KaspiConsol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OopNachalo", "OopNachalo\OopNachalo.csproj", "{AE0F9DCB-258C-4FDF-A567-D19918164871}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OopStorage", "OopStorage\OopStorage.csproj", "{6A6A692A-6487-4A91-B3A4-755EB8DF4BC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AE0F9DCB-258C-4FDF-A567-D19918164871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE0F9DCB-258C-4FDF-A567-D19918164871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE0F9DCB-258C-4FDF-A567-D19918164871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6A692A-6487-4A91-B3A4-755EB8DF4BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6A692A-6487-4A91-B3A4-755EB8DF4BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6A692A-6487-4A91-B3A4-755EB8DF4BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6A692A-6487-4A91-B3A4-755EB8DF4BC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
