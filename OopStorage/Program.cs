@@ -10,6 +10,7 @@ namespace OopStorage
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("oibai!");
         }
     }
 
