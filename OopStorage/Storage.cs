@@ -14,31 +14,40 @@ namespace OopStorage
         Employee MainEmployee;
         List<IProduct> Products = new List<IProduct>();
         bool open;
-        IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0);
+        //это вывод при отсутствии элемента при поиске товара, 
+        //нам же просто запрещено использовать вывод на консоль внутри классов
+        IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0); 
+        
 
         public string AddProduct(IProduct adding)
         {
+            //проверка на открытый/закрытый склад
             if (adding.Type == "Dry")
             {
                 if (open == true)
                 {
                     Products.Add(adding);
+                    return "Product was added";
                 }
-            }
-            else {
                 return "Storage is closed";
             }
-            Products.Add(adding);
-            return "Product was added";
+            else {
+                Products.Add(adding);
+                return "Product was added";
+            }
+            
         }
 
         public string MoveProduct(IProduct moving, int count, Storage where)
         {
-            List<IProduct> finder = Products.FindAll(x => x == moving);
+            // находим все продукты с таким именем
+            List<IProduct> finder = Products.FindAll(x => x.Name == moving.Name);
+            //если количества не хватает, то даём об этом знать
             if (finder.Count() < count)
             {
                 return $"This storage have only {finder.Count()} {moving.Unit} of product";
             }
+            //если количество есть, то добавляем этот товар в другой склад и удаляем у себя
             else
             {
                 foreach (IProduct i in finder)
@@ -65,6 +74,14 @@ namespace OopStorage
         public decimal PriceSum()
         {
             return Products.Sum(x => x.Price);
+            //почему-то не пашет 0_о
+            //а вру, всё тут пашет, и нижняя, и верхняя
+            /*decimal sum = 0;
+            foreach(IProduct i in Products)
+            {
+                sum += i.Price;
+            }
+            return sum;*/
         }
 
         public string ChangeMainEmployee(Employee changing)
