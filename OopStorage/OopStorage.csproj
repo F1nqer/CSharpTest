@@ -51,7 +51,7 @@
     <Compile Include="StorageClasses\LiquidProduct.cs" />
     <Compile Include="StorageClasses\OverallProduct.cs" />
     <Compile Include="StorageClasses\PeaceProduct.cs" />
-    <Compile Include="StorageClasses\Product.cs" />
+    <Compile Include="StorageClasses\IProduct.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

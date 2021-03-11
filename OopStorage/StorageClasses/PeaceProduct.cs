@@ -6,11 +6,21 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    class PeaceProduct : Product
+    class PeaceProduct : IProduct
     {
         public string Name { get; set; }
         public int SKU { get; set; }
         public string Definition { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
+        public string Type { get; set; } = "Peace";
+        public string Unit { get; set; } = "Peace";
+        public PeaceProduct(string Name, string Definition, int Price, int SKU)
+        {
+            this.Name = Name;
+            this.Definition = Definition;
+            this.Price = Price;
+            this.SKU = SKU;
+        }
+
     }
 }

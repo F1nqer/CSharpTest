@@ -10,5 +10,10 @@ namespace OopStorage.StorageClasses
     {
         public string FullName;
         public string Position;
+        public Employee(string Fullname, string Position)
+        {
+            this.FullName = FullName;
+            this.Position = Position;
+        }
     }
 }
