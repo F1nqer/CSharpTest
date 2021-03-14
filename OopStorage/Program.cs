@@ -16,10 +16,14 @@ namespace OopStorage
             Employee Diana = new Employee("Diana", "Director");
             Employee Zhangir = new Employee("Zhangir", "HR");
             Employee Chingiz = new Employee("Chingiz", "Manager");
+            //Создаём Адреса
+            Address First = new Address("Almaty", "Lermontova", 47);
+            Address Second = new Address("Taraz", "Lermontova", 47, 10, 20);
+            Address Third = new Address("Talgar", "Lermontova", 47);
             //Создаём склады и назначем сотрудников
-            Storage ForAll = new Storage("Almaty", 2000, Arystan, false);
-            Storage ForDry = new Storage("Taraz", 3000, Diana, true);
-            Storage ForAll2 = new Storage("Temirtau", 1000, Zhangir, false);
+            Storage ForAll = new Storage(First, 2000, Arystan, false);
+            Storage ForDry = new Storage(Second, 3000, Diana, true);
+            Storage ForAll2 = new Storage(Third, 1000, Zhangir, false);
             //Рандомно генерирую СКЮ
             int SKUCocaCola = 1949390;
             int SKUCar = 2312312;
@@ -27,49 +31,43 @@ namespace OopStorage
             int SKUPeace = 4930323;
 
             //Заполняю склады товарами
-            for(int i = 0; i<10; i++)
-            {
-                SKUCocaCola++;
+            
                 IProduct CocaCola = new LiquidProduct("CocaCola", "The best liquid", 200, SKUCocaCola);
-                ForAll.AddProduct(CocaCola);
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                SKUCar++;
+                ForAll.AddProduct(CocaCola, 10);
+            //2000 CocaCola
                 IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
-                ForAll.AddProduct(Car);
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                SKUDry++;
+                ForAll.AddProduct(Car, 20);
+           //40000 Cars
                 IProduct Dry = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
-                ForDry.AddProduct(Dry);
-            }
-            for (int i = 0; i < 10; i++)
-            {
+                ForDry.AddProduct(Dry, 8);
+           //1600 Dry
                 SKUPeace++;
                 IProduct ChupaChups = new PeaceProduct("ChupaChups", "The best candy", 24, SKUPeace);
-                ForAll2.AddProduct(ChupaChups);
-            }
-
+                ForAll2.AddProduct(ChupaChups, 100);
+            //2400 Chupa chups
+            //SUM is 46000
             //Провожу поиск товара по СКЮ и вывожу информацию по товару
             Console.WriteLine("Find product in ForAll Storage");
-            IProduct Find = ForAll.FindProduct(2312313);
-            Console.WriteLine($"{Find.Definition} is {Find.Name} with SKU: {Find.SKU}");
+            IProduct Find = ForAll.FindProduct(SKUCocaCola);
+            Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit}with SKU: {Find.SKU}");
+
+            Console.WriteLine("Find product in ForAll Storage");
+            Find = ForAll.FindProduct(SKUCar);
+            Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit}with SKU: {Find.SKU}");
 
             Console.WriteLine("Find product in ForAll2 Storage");
-            Find = ForAll2.FindProduct(4930325);
-            Console.WriteLine($"{Find.Definition} is {Find.Name} with SKU: {Find.SKU}");
+            Find = ForAll2.FindProduct(SKUPeace);
+            Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit} with SKU: {Find.SKU}");
 
             Console.WriteLine("Find product in ForDry Storage");
-            Find = ForDry.FindProduct(5949496);
-            Console.WriteLine($"{Find.Definition} is {Find.Name} with SKU: {Find.SKU}");
+            Find = ForDry.FindProduct(SKUDry);
+            Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit} with SKU: {Find.SKU}");
 
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
             Console.WriteLine("Dry product can't add in this Storage! I'm adding Dry product into closed storage");
             IProduct Dry1 = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
-            string DryTest = ForAll.AddProduct(Dry1);
+            string DryTest = ForAll.AddProduct(Dry1, 100);
             Console.WriteLine(DryTest);
 
             //Высчитываю сумму цен во всех складах

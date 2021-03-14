@@ -14,6 +14,8 @@ namespace OopStorage.StorageClasses
         public decimal Price { get; set; }
         public string Type { get; set; } = "Peace";
         public string Unit { get; set; } = "Peace";
+        public int Count { get; set; } = 0;
+
         public PeaceProduct(string Name, string Definition, int Price, int SKU)
         {
             this.Name = Name;

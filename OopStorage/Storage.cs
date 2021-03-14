@@ -9,7 +9,7 @@ namespace OopStorage
 {
     class Storage
     {
-        string Address;
+        Address Address;
         int Square;
         Employee MainEmployee;
         List<IProduct> Products = new List<IProduct>();
@@ -19,21 +19,42 @@ namespace OopStorage
         IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0); 
         
 
-        public string AddProduct(IProduct adding)
+        public string AddProduct(IProduct adding, int Count)
         {
-            //проверка на открытый/закрытый склад
             if (adding.Type == "Dry")
             {
                 if (open == true)
                 {
+                    if (Products.Contains(adding))
+                    {
+                        Products.Find(x => x == adding).Count += Count;
+                        return "Product was added";
+                    }
+                    else
+                    {
+                        adding.Count = Count;
+                        Products.Add(adding);
+                        return "Product was added";
+                    }
+                }
+                else
+                {
+                    return "Storage is closed";
+                }
+            }
+            else
+            {
+                if (Products.Contains(adding))
+                {
+                    Products.Find(x => x == adding).Count += Count;
+                    return "Product was added";
+                }
+                else
+                {
+                    adding.Count = Count;
                     Products.Add(adding);
                     return "Product was added";
                 }
-                return "Storage is closed";
-            }
-            else {
-                Products.Add(adding);
-                return "Product was added";
             }
             
         }
@@ -41,20 +62,18 @@ namespace OopStorage
         public string MoveProduct(IProduct moving, int count, Storage where)
         {
             // находим все продукты с таким именем
-            List<IProduct> finder = Products.FindAll(x => x.Name == moving.Name);
+            var finder = Products.Find(x => x.Name == moving.Name);
             //если количества не хватает, то даём об этом знать
-            if (finder.Count() < count)
+            if (finder.Count < count)
             {
-                return $"This storage have only {finder.Count()} {moving.Unit} of product";
+                return $"This storage have only {finder.Count} {moving.Unit} of product";
             }
             //если количество есть, то добавляем этот товар в другой склад и удаляем у себя
             else
             {
-                foreach (IProduct i in finder)
-                {
-                    where.AddProduct(i);
-                    Products.Remove(i);
-                }
+                where.AddProduct(moving, count);
+                Products.Find(x => x == moving).Count -= count;
+            
                 return "Product is moved";
             }
         }
@@ -73,7 +92,7 @@ namespace OopStorage
 
         public decimal PriceSum()
         {
-            return Products.Sum(x => x.Price);
+            return Products.Sum(x => x.Price*x.Count);
             //почему-то не пашет 0_о
             //а вру, всё тут пашет, и нижняя, и верхняя
             /*decimal sum = 0;
@@ -89,7 +108,7 @@ namespace OopStorage
             MainEmployee = changing;
             return "Employee was changing";
         }
-        public Storage(string Address, int Square, Employee MainEmployee, bool open )
+        public Storage(Address Address, int Square, Employee MainEmployee, bool open )
         {
             this.Address = Address;
             this.Square = Square;

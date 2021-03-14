@@ -12,6 +12,7 @@ namespace OopStorage.StorageClasses
         int SKU { get; set; }
         string Definition { get; set; }
         decimal Price { get; set; }
+        int Count { get; set; }
         string Type { get; set; }
         string Unit { get; set; }
 
