@@ -31,19 +31,19 @@ namespace OopStorage
             int SKUPeace = 4930323;
 
             //Заполняю склады товарами
-            
-                IProduct CocaCola = new LiquidProduct("CocaCola", "The best liquid", 200, SKUCocaCola);
-                ForAll.AddProduct(CocaCola, 10);
+            IProduct CocaCola = new LiquidProduct("CocaCola", "The best liquid", 200, SKUCocaCola);
+            ForAll.AddProduct(CocaCola, 10);
             //2000 CocaCola
-                IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
-                ForAll.AddProduct(Car, 20);
-           //40000 Cars
-                IProduct Dry = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
-                ForDry.AddProduct(Dry, 8);
+            IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
+            ForAll.AddProduct(Car, 20);
+            //40000 Cars
+            IProduct Dry = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
+            ForDry.AddProduct(Dry, 8);
            //1600 Dry
-                SKUPeace++;
-                IProduct ChupaChups = new PeaceProduct("ChupaChups", "The best candy", 24, SKUPeace);
-                ForAll2.AddProduct(ChupaChups, 100);
+            IProduct ChupaChups = new PeaceProduct("ChupaChups", "The best candy", 24, SKUPeace);
+            ForAll2.AddProduct(ChupaChups, 100);
+            //Второе добавление чупачупсов для проверки работы клонирования обьектов класса
+            ForAll2.AddProduct(ChupaChups, 100);
             //2400 Chupa chups
             //SUM is 46000
             //Провожу поиск товара по СКЮ и вывожу информацию по товару

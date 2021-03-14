@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    class OverallProduct : IProduct
+    class OverallProduct : IProduct //добавляю возможность клонирования, т.к. так проще жить
     {
         public string Name { get; set; }
         public int SKU { get; set; }
@@ -15,6 +15,11 @@ namespace OopStorage.StorageClasses
         public string Type { get; set; } = "Overall";
         public string Unit { get; set; } = "Overall piece";
         public int Count { get; set; } = 0;
+        //функция для клонирования
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
         public OverallProduct(string Name, string Definition, int Price, int SKU)
         {

@@ -19,8 +19,10 @@ namespace OopStorage
         IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0); 
         
 
-        public string AddProduct(IProduct adding, int Count)
+        public string AddProduct(IProduct helper, int Count)
         {
+            IProduct adding = (IProduct)helper.Clone();
+
             if (adding.Type == "Dry")
             {
                 if (open == true)

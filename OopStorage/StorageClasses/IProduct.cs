@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    interface IProduct
+    interface IProduct : ICloneable
+        //добавляю возможность клонирования, т.к. так проще жить
     {
         string Name { get; set; }
         int SKU { get; set; }
