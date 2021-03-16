@@ -66,9 +66,20 @@ namespace OopStorage
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
             Console.WriteLine("Dry product can't add in this Storage! I'm adding Dry product into closed storage");
-            IProduct Dry1 = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
-            string DryTest = ForAll.AddProduct(Dry1, 100);
-            Console.WriteLine(DryTest);
+            try
+            {
+                IProduct Dry1 = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
+                string DryTest = ForAll.AddProduct(Dry1, 100);
+                Console.WriteLine(DryTest);
+            }
+            catch(Exception dry)
+            {
+                Console.WriteLine(dry.Message);
+            }
+            finally
+            {
+                Console.WriteLine("finally test!");
+            }
 
             //Высчитываю сумму цен во всех складах
 

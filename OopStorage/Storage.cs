@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OopStorage.StorageClasses;
+using OopStorage.Exceptions;
 
 namespace OopStorage
 {
@@ -41,7 +42,7 @@ namespace OopStorage
                 }
                 else
                 {
-                    return "Storage is closed";
+                    throw new DryProductException("Can't add dry product into closed storage");
                 }
             }
             else
