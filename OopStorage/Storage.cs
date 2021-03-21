@@ -17,10 +17,14 @@ namespace OopStorage
         bool open;
         //это вывод при отсутствии элемента при поиске товара, 
         //нам же просто запрещено использовать вывод на консоль внутри классов
-        IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0); 
-        
+        IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0);
 
-        public string AddProduct(IProduct helper, int Count)
+        public delegate void GoodPut(object sender, StorageEventArgs args);
+        public event GoodPut NotifyGood;
+        public delegate void BadPut(object sender, StorageEventArgs args);
+        public event BadPut NotifyBad;
+
+        public void AddProduct(IProduct helper, int Count)
         {
             IProduct adding = (IProduct)helper.Clone();
 
@@ -31,17 +35,25 @@ namespace OopStorage
                     if (Products.Contains(adding))
                     {
                         Products.Find(x => x == adding).Count += Count;
-                        return "Product was added";
+                        if(NotifyGood!= null)
+                        {
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                        }
                     }
                     else
                     {
-                        adding.Count = Count;
-                        Products.Add(adding);
-                        return "Product was added";
+                        if (NotifyGood != null)
+                        {
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                        }
                     }
                 }
                 else
                 {
+                    if (NotifyBad != null)
+                    {
+                        NotifyBad(this, new StorageEventArgs($"Can't add dry product {helper.Name} into closed storage", NotifyBad.GetType().Name, this.Address, DateTime.Now, helper));
+                    }
                     throw new DryProductException("Can't add dry product into closed storage");
                 }
             }
@@ -50,13 +62,19 @@ namespace OopStorage
                 if (Products.Contains(adding))
                 {
                     Products.Find(x => x == adding).Count += Count;
-                    return "Product was added";
+                    if (NotifyGood != null)
+                    {
+                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                    }
                 }
                 else
                 {
                     adding.Count = Count;
                     Products.Add(adding);
-                    return "Product was added";
+                    if (NotifyGood != null)
+                    {
+                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                    }
                 }
             }
             
@@ -118,5 +136,6 @@ namespace OopStorage
             this.MainEmployee = MainEmployee;
             this.open = open;
         }
+
     }
 }

@@ -24,6 +24,14 @@ namespace OopStorage
             Storage ForAll = new Storage(First, 2000, Arystan, false);
             Storage ForDry = new Storage(Second, 3000, Diana, true);
             Storage ForAll2 = new Storage(Third, 1000, Zhangir, false);
+
+            //Добавляем обработчик действий
+            // была проверка с подпиской, без подписки, с двумя разными обработчиками
+            //ForAll.NotifyBad += DisplayMessage;
+            ForAll.NotifyGood += DisplayMessage;
+            ForAll.NotifyBad += ShowInfo;
+            //ForAll.NotifyGood += ShowInfo;
+
             //Рандомно генерирую СКЮ
             int SKUCocaCola = 1949390;
             int SKUCar = 2312312;
@@ -65,12 +73,12 @@ namespace OopStorage
 
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
-            Console.WriteLine("Dry product can't add in this Storage! I'm adding Dry product into closed storage");
+            //Console.WriteLine("Dry product can't add in this Storage! I'm adding Dry product into closed storage");
             try
             {
                 IProduct Dry1 = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
-                string DryTest = ForAll.AddProduct(Dry1, 100);
-                Console.WriteLine(DryTest);
+                ForAll.AddProduct(Dry1, 100);
+                
             }
             catch(Exception dry)
             {
@@ -79,6 +87,7 @@ namespace OopStorage
             finally
             {
                 Console.WriteLine("finally test!");
+
             }
 
             //Высчитываю сумму цен во всех складах
@@ -88,6 +97,16 @@ namespace OopStorage
 
             Console.ReadKey();
 
+        }
+        private static void DisplayMessage(object sender, StorageEventArgs args)
+        {
+            Console.WriteLine($"Returned storage event: {args.Type}");
+            Console.WriteLine(args.Message);
+        }
+
+        private static void ShowInfo(object sender, StorageEventArgs args)
+        {
+            Console.WriteLine($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
     }
 
