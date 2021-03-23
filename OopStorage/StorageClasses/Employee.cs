@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    class Employee
+    public class Employee
     {
         public string FullName;
         public string Position;

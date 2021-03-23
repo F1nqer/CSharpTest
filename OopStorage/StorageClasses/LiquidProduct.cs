@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    class LiquidProduct : IProduct, ICloneable //добавляю возможность клонирования, т.к. так проще жить
+    class LiquidProduct : IProduct, IEquatable<IProduct>, ICloneable //добавляю возможность клонирования, т.к. так проще жить
     {
         public string Name { get; set; }
         public int SKU { get; set; }
@@ -14,12 +14,18 @@ namespace OopStorage.StorageClasses
         public decimal Price { get; set; }
         public string Type { get; set; } = "Liquid";
         public string Unit { get; set; } = "Liter";
-        public int Count { get; set; } = 0;
+        public decimal Count { get; set; } = 0;
         //функция для клонирования
         public object Clone()
         {
             return this.MemberwiseClone();
         }
+
+        public bool Equals(IProduct other)
+        {
+            return this.SKU == other.SKU;
+        }
+
         public LiquidProduct(string Name, string Definition, int Price, int SKU)
         {
             this.Name = Name;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OopStorage.StorageClasses;
+using OopStorage.StorageClasses.StorageExtensions;
 
 namespace OopStorage
 {
@@ -11,6 +12,7 @@ namespace OopStorage
     {
         static void Main(string[] args)
         {
+            Dictionary<int, string> StorageProducts = new Dictionary<int, string>(); 
             //Создаём сотрудников
             Employee Arystan = new Employee("Arystan", "Engineer");
             Employee Diana = new Employee("Diana", "Director");
@@ -30,6 +32,10 @@ namespace OopStorage
             //ForAll.NotifyBad += DisplayMessage;
             ForAll.NotifyGood += DisplayMessage;
             ForAll.NotifyBad += ShowInfo;
+            ForAll2.NotifyGood += DisplayMessage;
+            ForAll2.NotifyBad += ShowInfo;
+            ForDry.NotifyGood += DisplayMessage;
+            ForDry.NotifyBad += ShowInfo;
             //ForAll.NotifyGood += ShowInfo;
 
             //Рандомно генерирую СКЮ
@@ -40,6 +46,7 @@ namespace OopStorage
 
             //Заполняю склады товарами
             IProduct CocaCola = new LiquidProduct("CocaCola", "The best liquid", 200, SKUCocaCola);
+            ForAll.AddProduct(CocaCola, 10);
             ForAll.AddProduct(CocaCola, 10);
             //2000 CocaCola
             IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
@@ -52,7 +59,7 @@ namespace OopStorage
             ForAll2.AddProduct(ChupaChups, 100);
             //Второе добавление чупачупсов для проверки работы клонирования обьектов класса
             ForAll2.AddProduct(ChupaChups, 100);
-            //2400 Chupa chups
+            //2400 Chupa chups  
             //SUM is 46000
             //Провожу поиск товара по СКЮ и вывожу информацию по товару
             Console.WriteLine("Find product in ForAll Storage");
@@ -71,6 +78,19 @@ namespace OopStorage
             Find = ForDry.FindProduct(SKUDry);
             Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit} with SKU: {Find.SKU}");
 
+            StorageProducts = ForAll.StorageSKU();
+            ForAll.TwoStorageProducts(ForAll2);
+            foreach (KeyValuePair<int, string> i in StorageProducts)
+            {
+                Console.WriteLine(i);
+            }
+            ForAll2.OtherStorageHelp(ForAll);
+            ForAll.TwoStorageProducts(ForAll2);
+            
+            foreach (KeyValuePair<int, string> i in StorageProducts)
+            {
+                Console.WriteLine(i);
+            }
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
             //Console.WriteLine("Dry product can't add in this Storage! I'm adding Dry product into closed storage");
@@ -78,9 +98,9 @@ namespace OopStorage
             {
                 IProduct Dry1 = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
                 ForAll.AddProduct(Dry1, 100);
-                
+
             }
-            catch(Exception dry)
+            catch(Exception dry)    
             {
                 Console.WriteLine(dry.Message);
             }
@@ -108,7 +128,8 @@ namespace OopStorage
         {
             Console.WriteLine($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
-    }
 
- 
+
+        
+    }
 }

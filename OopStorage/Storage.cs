@@ -8,12 +8,12 @@ using OopStorage.Exceptions;
 
 namespace OopStorage
 {
-    class Storage
+    public class Storage
     {
-        Address Address;
+        public Address Address;
         int Square;
         Employee MainEmployee;
-        List<IProduct> Products = new List<IProduct>();
+        public List<IProduct> Products = new List<IProduct>();
         bool open;
         //это вывод при отсутствии элемента при поиске товара, 
         //нам же просто запрещено использовать вывод на консоль внутри классов
@@ -24,7 +24,7 @@ namespace OopStorage
         public delegate void BadPut(object sender, StorageEventArgs args);
         public event BadPut NotifyBad;
 
-        public void AddProduct(IProduct helper, int Count)
+        public void AddProduct(IProduct helper, decimal Count)
         {
             IProduct adding = (IProduct)helper.Clone();
 
@@ -34,17 +34,26 @@ namespace OopStorage
                 {
                     if (Products.Contains(adding))
                     {
-                        Products.Find(x => x == adding).Count += Count;
-                        if(NotifyGood!= null)
+                        for (int i = 0; i < Products.Count(); i++)
                         {
-                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                            if (Products[i].SKU == adding.SKU)
+                            {
+                                Products[i].Count += Count;
+                            }
+                        }
+                        
+                        if (NotifyGood!= null)
+                        {
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                         }
                     }
                     else
                     {
+                        adding.Count = Count;
+                        Products.Add(adding);
                         if (NotifyGood != null)
                         {
-                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added COUNT: {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                         }
                     }
                 }
@@ -61,10 +70,16 @@ namespace OopStorage
             {
                 if (Products.Contains(adding))
                 {
-                    Products.Find(x => x == adding).Count += Count;
+                    for(int i = 0; i < Products.Count(); i++)
+                        {
+                        if (Products[i].SKU == adding.SKU)
+                        {
+                            Products[i].Count += Count;
+                        }
+                    }
                     if (NotifyGood != null)
                     {
-                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                     }
                 }
                 else
@@ -73,7 +88,7 @@ namespace OopStorage
                     Products.Add(adding);
                     if (NotifyGood != null)
                     {
-                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                        NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                     }
                 }
             }
@@ -83,7 +98,7 @@ namespace OopStorage
         public string MoveProduct(IProduct moving, int count, Storage where)
         {
             // находим все продукты с таким именем
-            var finder = Products.Find(x => x.Name == moving.Name);
+            var finder = Products.Find(x => x.SKU == moving.SKU);
             //если количества не хватает, то даём об этом знать
             if (finder.Count < count)
             {
@@ -93,8 +108,14 @@ namespace OopStorage
             else
             {
                 where.AddProduct(moving, count);
-                Products.Find(x => x == moving).Count -= count;
-            
+                for (int i = 0; i < Products.Count(); i++)
+                {
+                    if (Products[i].SKU == moving.SKU)
+                    {
+                        Products[i].Count -= count;
+                    }
+                }
+
                 return "Product is moved";
             }
         }

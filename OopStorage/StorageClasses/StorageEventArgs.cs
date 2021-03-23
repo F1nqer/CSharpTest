@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OopStorage.StorageClasses
 {
-    class StorageEventArgs
+    public class StorageEventArgs
     {
         public string Message { get; }
         public string Type { get; }

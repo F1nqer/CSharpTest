@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OopStorage
 {
-    class Address
+    public class Address
     {
         public string City;
         public string Street;
