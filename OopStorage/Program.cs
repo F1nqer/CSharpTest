@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -157,6 +158,24 @@ namespace OopStorage
             {
                 Console.WriteLine(i.Products.Count);
             }
+
+            string path = @"D:\net";
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+            if (Storages != null)
+            {
+                using (StreamWriter streamWriter = new StreamWriter($@"{path}\test.csv", true, Encoding.GetEncoding("windows-1251")))
+                {
+                    foreach (var storage in Storages)
+                    {
+                        streamWriter.WriteLine($"{storage.Address.City};{storage.Address.Street}; open: {storage.open};{storage.PriceSum()}");
+                    }
+                }
+            }
+            
 
             Console.ReadKey();
 
