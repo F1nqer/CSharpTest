@@ -14,7 +14,7 @@ namespace OopStorage
         int Square;
         Employee MainEmployee;
         public List<IProduct> Products = new List<IProduct>();
-        bool open;
+        public bool open;
         //это вывод при отсутствии элемента при поиске товара, 
         //нам же просто запрещено использовать вывод на консоль внутри классов
         IProduct Error = new OverallProduct("ERROR", "ERROR", 000, 0);

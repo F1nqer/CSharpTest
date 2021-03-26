@@ -47,6 +47,7 @@
     <Compile Include="Exceptions\DryProductException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="StorageClasses\DryProduct.cs" />
     <Compile Include="StorageClasses\Employee.cs" />

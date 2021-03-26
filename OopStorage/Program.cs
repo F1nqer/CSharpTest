@@ -12,6 +12,7 @@ namespace OopStorage
     {
         static void Main(string[] args)
         {
+            int ReportsNum = 1;
             Dictionary<int, string> StorageProducts = new Dictionary<int, string>(); 
             //Создаём сотрудников
             Employee Arystan = new Employee("Arystan", "Engineer");
@@ -50,7 +51,7 @@ namespace OopStorage
             ForAll.AddProduct(CocaCola, 10);
             //2000 CocaCola
             IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
-            ForAll.AddProduct(Car, 20);
+            ForAll.AddProduct(Car, 2);
             //40000 Cars
             IProduct Dry = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
             ForDry.AddProduct(Dry, 8);
@@ -115,6 +116,48 @@ namespace OopStorage
             decimal summ = ForAll.PriceSum() + ForAll2.PriceSum() + ForDry.PriceSum();
             Console.WriteLine($"Summ: {summ}");
 
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine("Reports");
+
+            List<Storage> Storages = new List<Storage> { ForAll, ForAll2, ForDry };
+
+           /* ForAll.AddProduct(CocaCola, 10);
+            ForAll.AddProduct(Car, 2);
+            ForAll.AddProduct(ChupaChups, 1000);
+          
+            ForAll.AddProduct(CocaCola, 10);*/
+
+            List<IProduct> Report1 = Reports.Distinct(ForAll);
+            List<IProduct> Report2 = Reports.FirstBiggerThree(ForAll2); 
+            List<IProduct> Report3 = Reports.LessThanThree(ForAll);
+            List<Storage> Report4 = Reports.WithoutDryStorages(Storages);
+
+            List<List<IProduct>> ListofLists = new List<List<IProduct>> { Report1, Report2, Report3 };
+            foreach(List<IProduct> i in ListofLists)
+            {
+                Console.WriteLine($"Report {ReportsNum}!");
+                foreach(IProduct j in i)
+                {
+                    Console.WriteLine(j.Name);
+                    Console.WriteLine(j.SKU);
+                    Console.WriteLine(j.Count);
+                }
+                Console.WriteLine("End of report!");
+                ReportsNum++;
+            }
+
+            Console.WriteLine("Report 4!");
+            foreach (Storage i in Report4)
+            {
+                Console.WriteLine(i.Products.Count);
+            }
+
             Console.ReadKey();
 
         }
@@ -128,7 +171,6 @@ namespace OopStorage
         {
             Console.WriteLine($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
-
 
         
     }
