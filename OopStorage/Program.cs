@@ -13,6 +13,7 @@ namespace OopStorage
     {
         static void Main(string[] args)
         {
+            Catalog CatalogTest = Catalog.GetInstance();
             int ReportsNum = 1;
             Dictionary<int, string> StorageProducts = new Dictionary<int, string>(); 
             //Создаём сотрудников
@@ -47,17 +48,17 @@ namespace OopStorage
             int SKUPeace = 4930323;
 
             //Заполняю склады товарами
-            IProduct CocaCola = new LiquidProduct("CocaCola", "The best liquid", 200, SKUCocaCola);
+            IProduct CocaCola = CatalogTest.GetProduct(SKUCocaCola);
             ForAll.AddProduct(CocaCola, 10);
             ForAll.AddProduct(CocaCola, 10);
             //2000 CocaCola
-            IProduct Car = new OverallProduct("TheBestCar", "Good good car", 2000, SKUCar);
+            IProduct Car = CatalogTest.GetProduct(SKUCar);
             ForAll.AddProduct(Car, 2);
             //40000 Cars
-            IProduct Dry = new DryProduct("DryProduct", "The driest product", 200, SKUDry);
+            IProduct Dry = CatalogTest.GetProduct(SKUDry);
             ForDry.AddProduct(Dry, 8);
            //1600 Dry
-            IProduct ChupaChups = new PeaceProduct("ChupaChups", "The best candy", 24, SKUPeace);
+            IProduct ChupaChups = CatalogTest.GetProduct(SKUPeace);
             ForAll2.AddProduct(ChupaChups, 100);
             //Второе добавление чупачупсов для проверки работы клонирования обьектов класса
             ForAll2.AddProduct(ChupaChups, 100);
