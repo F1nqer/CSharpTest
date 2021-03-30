@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OopStorage.StorageClasses;
 using OopStorage.StorageClasses.StorageExtensions;
+using OopStorage.StorageClasses.Command;
 
 namespace OopStorage
 {
@@ -13,22 +14,32 @@ namespace OopStorage
     {
         static void Main(string[] args)
         {
+            //receiver - Storage.cs
+            //command - ICommand.cs
+            //concrete command - Adding.cs
+            //client - Employee.cs
+            //invoker - WorkDay.cs
             Catalog CatalogTest = Catalog.GetInstance();
             int ReportsNum = 1;
-            Dictionary<int, string> StorageProducts = new Dictionary<int, string>(); 
+            Dictionary<int, string> StorageProducts = new Dictionary<int, string>();
             //Создаём сотрудников
             Employee Arystan = new Employee("Arystan", "Engineer");
             Employee Diana = new Employee("Diana", "Director");
-            Employee Zhangir = new Employee("Zhangir", "HR");
-            Employee Chingiz = new Employee("Chingiz", "Manager");
+            Employee Zhangir = new Employee("Zhangir", "Manager");
             //Создаём Адреса
             Address First = new Address("Almaty", "Lermontova", 47);
             Address Second = new Address("Taraz", "Lermontova", 47, 10, 20);
             Address Third = new Address("Talgar", "Lermontova", 47);
             //Создаём склады и назначем сотрудников
             Storage ForAll = new Storage(First, 2000, Arystan, false);
+            ForAll.ChangeMainEmployee(Arystan, ForAll);
             Storage ForDry = new Storage(Second, 3000, Diana, true);
+            ForDry.ChangeMainEmployee(Diana, ForDry);
             Storage ForAll2 = new Storage(Third, 1000, Zhangir, false);
+            ForAll2.ChangeMainEmployee(Zhangir, ForAll2);
+
+            
+
 
             //Добавляем обработчик действий
             // была проверка с подпиской, без подписки, с двумя разными обработчиками
@@ -49,22 +60,38 @@ namespace OopStorage
 
             //Заполняю склады товарами
             IProduct CocaCola = CatalogTest.GetProduct(SKUCocaCola);
-            ForAll.AddProduct(CocaCola, 10);
-            ForAll.AddProduct(CocaCola, 10);
+            Arystan.AddingTask(CocaCola, 10);
+            Arystan.AddingTask(CocaCola, 10);
+
             //2000 CocaCola
             IProduct Car = CatalogTest.GetProduct(SKUCar);
-            ForAll.AddProduct(Car, 2);
+            Arystan.AddingTask(Car, 2);
+
             //40000 Cars
             IProduct Dry = CatalogTest.GetProduct(SKUDry);
-            ForDry.AddProduct(Dry, 8);
-           //1600 Dry
+            Diana.AddingTask(Dry, 2);
+            //1600 Dry
             IProduct ChupaChups = CatalogTest.GetProduct(SKUPeace);
-            ForAll2.AddProduct(ChupaChups, 100);
+            Zhangir.AddingTask(ChupaChups, 100);
             //Второе добавление чупачупсов для проверки работы клонирования обьектов класса
-            ForAll2.AddProduct(ChupaChups, 100);
+            Zhangir.AddingTask(ChupaChups, 100);
             //2400 Chupa chups  
             //SUM is 46000
             //Провожу поиск товара по СКЮ и вывожу информацию по товару
+
+            WorkDay DianaDay = new WorkDay(Diana);
+            WorkDay ZhangirDay = new WorkDay(Zhangir);
+            WorkDay ArystanDay = new WorkDay(Arystan);
+
+            ArystanDay.StartDay();
+            DianaDay.StartDay();
+            ZhangirDay.StartDay();
+
+            ArystanDay.EndDay();
+            DianaDay.EndDay();
+            ZhangirDay.EndDay();
+
+
             Console.WriteLine("Find product in ForAll Storage");
             IProduct Find = ForAll.FindProduct(SKUCocaCola);
             Console.WriteLine($"{Find.Definition} is {Find.Name} {Find.Count} {Find.Unit}with SKU: {Find.SKU}");
@@ -89,7 +116,7 @@ namespace OopStorage
             }
             ForAll2.OtherStorageHelp(ForAll);
             ForAll.TwoStorageProducts(ForAll2);
-            
+
             foreach (KeyValuePair<int, string> i in StorageProducts)
             {
                 Console.WriteLine(i);
@@ -103,7 +130,7 @@ namespace OopStorage
                 ForAll.AddProduct(Dry1, 100);
 
             }
-            catch(Exception dry)    
+            catch (Exception dry)
             {
                 Console.WriteLine(dry.Message);
             }
@@ -129,22 +156,22 @@ namespace OopStorage
 
             List<Storage> Storages = new List<Storage> { ForAll, ForAll2, ForDry };
 
-           /* ForAll.AddProduct(CocaCola, 10);
-            ForAll.AddProduct(Car, 2);
-            ForAll.AddProduct(ChupaChups, 1000);
-          
-            ForAll.AddProduct(CocaCola, 10);*/
+            /* ForAll.AddProduct(CocaCola, 10);
+             ForAll.AddProduct(Car, 2);
+             ForAll.AddProduct(ChupaChups, 1000);
+
+             ForAll.AddProduct(CocaCola, 10);*/
 
             List<IProduct> Report1 = Reports.Distinct(ForAll);
-            List<IProduct> Report2 = Reports.FirstBiggerThree(ForAll2); 
+            List<IProduct> Report2 = Reports.FirstBiggerThree(ForAll2);
             List<IProduct> Report3 = Reports.LessThanThree(ForAll);
             List<Storage> Report4 = Reports.WithoutDryStorages(Storages);
 
             List<List<IProduct>> ListofLists = new List<List<IProduct>> { Report1, Report2, Report3 };
-            foreach(List<IProduct> i in ListofLists)
+            foreach (List<IProduct> i in ListofLists)
             {
                 Console.WriteLine($"Report {ReportsNum}!");
-                foreach(IProduct j in i)
+                foreach (IProduct j in i)
                 {
                     Console.WriteLine(j.Name);
                     Console.WriteLine(j.SKU);
@@ -176,7 +203,7 @@ namespace OopStorage
                     }
                 }
             }
-            
+
 
             Console.ReadKey();
 
@@ -191,7 +218,5 @@ namespace OopStorage
         {
             Console.WriteLine($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
-
-        
     }
 }

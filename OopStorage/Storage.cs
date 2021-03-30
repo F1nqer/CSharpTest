@@ -12,7 +12,7 @@ namespace OopStorage
     {
         public Address Address;
         int Square;
-        Employee MainEmployee;
+        public Employee MainEmployee;
         public List<IProduct> Products = new List<IProduct>();
         public bool open;
         //это вывод при отсутствии элемента при поиске товара, 
@@ -145,12 +145,13 @@ namespace OopStorage
             return sum;*/
         }
 
-        public string ChangeMainEmployee(Employee changing)
+        public string ChangeMainEmployee(Employee changing, Storage storage)
         {
             MainEmployee = changing;
+            MainEmployee.Storage = storage;
             return "Employee was changing";
         }
-        public Storage(Address Address, int Square, Employee MainEmployee, bool open )
+        public Storage(Address Address, int Square, Employee MainEmployee, bool open)
         {
             this.Address = Address;
             this.Square = Square;
