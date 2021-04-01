@@ -27,6 +27,7 @@ namespace OopStorage
         public void AddProduct(IProduct helper, decimal Count)
         {
             IProduct adding = (IProduct)helper.Clone();
+            adding.Count = Count;
 
             if (adding.Type == "Dry")
             {
@@ -44,7 +45,7 @@ namespace OopStorage
                         
                         if (NotifyGood!= null)
                         {
-                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added {adding.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                         }
                     }
                     else
@@ -53,7 +54,7 @@ namespace OopStorage
                         Products.Add(adding);
                         if (NotifyGood != null)
                         {
-                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added COUNT: {helper.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
+                            NotifyGood(this, new StorageEventArgs($"Product {helper.Name} was added COUNT: {adding.Count}", NotifyGood.GetType().Name, this.Address, DateTime.Now, helper));
                         }
                     }
                 }

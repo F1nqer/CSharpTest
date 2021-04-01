@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace OopStorage.StorageClasses
         public string FullName;
         public string Position;
         public Storage Storage;
-        public Queue<ICommand> CommandQueue = new Queue<ICommand>();
+        public ConcurrentQueue<ICommand> CommandQueue = new ConcurrentQueue<ICommand>();
         public Employee(string Fullname, string Position)
         {
             this.FullName = Fullname;
