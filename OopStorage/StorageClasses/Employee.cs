@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using OopStorage.StorageClasses.Command;
 
 namespace OopStorage.StorageClasses
 {
     public class Employee
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public string FullName;
         public string Position;
         public Storage Storage;
@@ -28,7 +31,7 @@ namespace OopStorage.StorageClasses
         }
         private static void DisplayMessage(string message)
         {
-            Console.WriteLine(message);
+            logger.Debug(message);
         }
     }
 }

@@ -8,20 +8,22 @@ using OopStorage.StorageClasses;
 using OopStorage.StorageClasses.StorageExtensions;
 using OopStorage.StorageClasses.Command;
 using System.Threading;
+using NLog;
 
 namespace OopStorage
 {
-    class Program
+    internal class Program
     {
+        static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            //receiver - Storage.cs
-            //command - ICommand.cs
-            //concrete command - Adding.cs
-            //client - Employee.cs
-            //invoker - WorkDay.cs
-            Catalog CatalogTest = Catalog.GetInstance();
-            int ReportsNum = 1;
+           
+        //receiver - Storage.cs
+        //command - ICommand.cs
+        //concrete command - Adding.cs
+        //client - Employee.cs
+        //invoker - WorkDay.cs
+        Catalog CatalogTest = Catalog.GetInstance();
             Dictionary<int, string> StorageProducts = new Dictionary<int, string>();
             //Создаём сотрудников
             Employee Arystan = new Employee("Arystan", "Engineer");
@@ -117,16 +119,13 @@ namespace OopStorage
             //Высчитываю сумму цен во всех складах
 
             decimal summ = ForAll.PriceSum() + ForAll2.PriceSum() + ForDry.PriceSum();
-            Console.WriteLine($"Summ: {summ}");
+            logger.Debug($"Summ: {summ}");
 
 
 
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine("");
-            }
+            
 
-            Console.WriteLine("Reports");
+            logger.Debug("Reports");
 
             Parallel.Invoke(()=>Reports.Distinct(ForAll),
             () => Reports.FirstBiggerThree(ForAll2),
@@ -176,14 +175,13 @@ namespace OopStorage
         }
         private static void DisplayMessage(object sender, StorageEventArgs args)
         {
-            Console.WriteLine($"Returned storage event: {args.Type}");
-            Console.WriteLine(args.Message);
+            logger.Debug($"Returned storage event: {args.Type}");
+            logger.Debug(args.Message);
         }
 
         private static void ShowInfo(object sender, StorageEventArgs args)
         {
-            Console.WriteLine($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
+            logger.Debug($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
-
     }
 }

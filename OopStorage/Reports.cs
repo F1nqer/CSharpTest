@@ -1,4 +1,5 @@
-﻿using OopStorage.StorageClasses;
+﻿using NLog;
+using OopStorage.StorageClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace OopStorage
 {
     class Reports
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static void LessThanThree(Storage first)
         {
             List<IProduct> helper = first.Products;
@@ -23,7 +26,7 @@ namespace OopStorage
                 report += "\n" + j.SKU;
                 report += "\n" + j.Count;
             }
-            Console.WriteLine(report);
+            logger.Debug(report);
         }
         public async void LessThanThreeAsync(Storage first)
         {
@@ -45,7 +48,7 @@ namespace OopStorage
                 report += "\n" + j.SKU;
                 report += "\n" + j.Count;
             }
-            Console.WriteLine(report);
+            logger.Debug(report);
         }
         public async void DistinctAsync(Storage first)
         {
@@ -64,7 +67,7 @@ namespace OopStorage
                 report += "\n" + j.SKU;
                 report += "\n" + j.Count;
             }
-            Console.WriteLine(report);
+            logger.Debug(report);
         }
         public async void FirstBiggerThreeAsync(Storage first)
         {
@@ -80,7 +83,7 @@ namespace OopStorage
                 report += "/n";
                 report += i.Products.Count;
             }
-            Console.WriteLine(report);
+            logger.Debug(report);
         }
         public async void WithoutDryStoragesAsync(List<Storage> storages)
         {
