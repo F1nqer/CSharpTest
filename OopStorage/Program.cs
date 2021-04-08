@@ -18,9 +18,6 @@ namespace OopStorage
         static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            Stopwatch StopWatch = new Stopwatch();
-            Stopwatch StopWatch1 = new Stopwatch();
-            Stopwatch StopWatch2 = new Stopwatch();
 
             //receiver - Storage.cs
             //command - ICommand.cs
@@ -156,45 +153,9 @@ namespace OopStorage
 
             Task.WaitAll();
 
+            forMd5(); //функция для md5
 
-            StopWatch.Start();
-            ParallelLoopResult result = Parallel.For(1, 8, md5);
-            Task.WaitAll();
-            if (result.IsCompleted)
-                StopWatch.Stop();
-            // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = StopWatch.Elapsed;
-
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-
-            StopWatch1.Start();
-            ParallelLoopResult result1 = Parallel.For(1, 32, md5);
-            Task.WaitAll();
-            if (!result1.IsCompleted)
-                StopWatch1.Stop();
-            TimeSpan ts1 = StopWatch1.Elapsed;
-
-            string elapsedTime1 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-               ts1.Hours, ts1.Minutes, ts1.Seconds,
-               ts1.Milliseconds / 10);
-
-            StopWatch.Start();
-            ParallelLoopResult result2 = Parallel.For(1, 64, md5);
-            Task.WaitAll();
-            if (!result2.IsCompleted)
-                StopWatch.Stop();
-            TimeSpan ts2 = StopWatch2.Elapsed;
-            string elapsedTime2 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-               ts2.Hours, ts2.Minutes, ts2.Seconds,
-               ts2.Milliseconds / 10);
-
-
-            Console.WriteLine("RunTime " + elapsedTime);
-            Console.WriteLine("RunTime1 " + elapsedTime1);
-            Console.WriteLine("RunTime2 " + elapsedTime2);
+           
 
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
@@ -244,6 +205,51 @@ namespace OopStorage
                 /*Console.WriteLine("end");*/
             }
             while (j < count);
+        }
+
+        private static void forMd5()
+        {
+            Stopwatch StopWatch = new Stopwatch();
+            Stopwatch StopWatch1 = new Stopwatch();
+            Stopwatch StopWatch2 = new Stopwatch();
+            StopWatch.Start();
+            ParallelLoopResult result = Parallel.For(1, 8, md5);
+            Task.WaitAll();
+            if (result.IsCompleted)
+                StopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = StopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            StopWatch1.Start();
+            ParallelLoopResult result1 = Parallel.For(1, 32, md5);
+            Task.WaitAll();
+            if (!result1.IsCompleted)
+                StopWatch1.Stop();
+            TimeSpan ts1 = StopWatch1.Elapsed;
+
+            string elapsedTime1 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+               ts1.Hours, ts1.Minutes, ts1.Seconds,
+               ts1.Milliseconds / 10);
+
+            StopWatch.Start();
+            ParallelLoopResult result2 = Parallel.For(1, 64, md5);
+            Task.WaitAll();
+            if (!result2.IsCompleted)
+                StopWatch.Stop();
+            TimeSpan ts2 = StopWatch2.Elapsed;
+            string elapsedTime2 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+               ts2.Hours, ts2.Minutes, ts2.Seconds,
+               ts2.Milliseconds / 10);
+
+
+            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("RunTime1 " + elapsedTime1);
+            Console.WriteLine("RunTime2 " + elapsedTime2);
         }
 
         private static void ShowInfo(object sender, StorageEventArgs args)
