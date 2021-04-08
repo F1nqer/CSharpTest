@@ -9,6 +9,7 @@ using OopStorage.StorageClasses.StorageExtensions;
 using OopStorage.StorageClasses.Command;
 using System.Threading;
 using NLog;
+using System.Diagnostics;
 
 namespace OopStorage
 {
@@ -17,13 +18,16 @@ namespace OopStorage
         static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-           
-        //receiver - Storage.cs
-        //command - ICommand.cs
-        //concrete command - Adding.cs
-        //client - Employee.cs
-        //invoker - WorkDay.cs
-        Catalog CatalogTest = Catalog.GetInstance();
+            Stopwatch StopWatch = new Stopwatch();
+            Stopwatch StopWatch1 = new Stopwatch();
+            Stopwatch StopWatch2 = new Stopwatch();
+
+            //receiver - Storage.cs
+            //command - ICommand.cs
+            //concrete command - Adding.cs
+            //client - Employee.cs
+            //invoker - WorkDay.cs
+            Catalog CatalogTest = Catalog.GetInstance();
             Dictionary<int, string> StorageProducts = new Dictionary<int, string>();
             //Создаём сотрудников
             Employee Arystan = new Employee("Arystan", "Engineer");
@@ -150,6 +154,47 @@ namespace OopStorage
                 }
             }
 
+            Task.WaitAll();
+
+
+            StopWatch.Start();
+            ParallelLoopResult result = Parallel.For(1, 8, md5);
+            Task.WaitAll();
+            if (result.IsCompleted)
+                StopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = StopWatch.Elapsed;
+
+            // Format and display the TimeSpan value.
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+
+            StopWatch1.Start();
+            ParallelLoopResult result1 = Parallel.For(1, 32, md5);
+            Task.WaitAll();
+            if (!result1.IsCompleted)
+                StopWatch1.Stop();
+            TimeSpan ts1 = StopWatch1.Elapsed;
+
+            string elapsedTime1 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+               ts1.Hours, ts1.Minutes, ts1.Seconds,
+               ts1.Milliseconds / 10);
+
+            StopWatch.Start();
+            ParallelLoopResult result2 = Parallel.For(1, 64, md5);
+            Task.WaitAll();
+            if (!result2.IsCompleted)
+                StopWatch.Stop();
+            TimeSpan ts2 = StopWatch2.Elapsed;
+            string elapsedTime2 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+               ts2.Hours, ts2.Minutes, ts2.Seconds,
+               ts2.Milliseconds / 10);
+
+
+            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("RunTime1 " + elapsedTime1);
+            Console.WriteLine("RunTime2 " + elapsedTime2);
 
             //Сейчас для примера выведу, что не покажет функция добавления товара,
             //если я в закрытый склад попытаюсь добавить сыпучий товар
@@ -177,6 +222,28 @@ namespace OopStorage
         {
             logger.Debug($"Returned storage event: {args.Type}");
             logger.Debug(args.Message);
+        }
+        
+        private static void md5(int count)
+        {
+            string str = "abcdeABCDEOIBAI"+count.ToString();
+            int j = 0;
+            do
+            {
+                j++;
+                /*Console.WriteLine("start");*/
+                System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+                byte[] bytes = Encoding.Default.GetBytes(str);
+                byte[] encoded = md5.ComputeHash(bytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < encoded.Length; i++)
+                    sb.Append(encoded[i].ToString("x2"));
+
+                Console.WriteLine(sb.ToString());
+                /*Console.WriteLine("end");*/
+            }
+            while (j < count);
         }
 
         private static void ShowInfo(object sender, StorageEventArgs args)
