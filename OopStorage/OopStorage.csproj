@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="Catalog.cs" />
+    <Compile Include="CSVAttribute.cs" />
     <Compile Include="Exceptions\DryProductException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

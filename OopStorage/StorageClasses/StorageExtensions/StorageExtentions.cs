@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,11 @@ namespace OopStorage.StorageClasses.StorageExtensions
                         Console.WriteLine($"{i.SKU}: {i.Name} in {example.Address.City} and {helper.Address.City}");
                 }
             }
+        }
+
+        public static Assembly ListAssembly(this List<int> example)
+        {
+            return Assembly.GetExecutingAssembly();
         }
 
         public static void OtherStorageHelp(this Storage first, Storage second)

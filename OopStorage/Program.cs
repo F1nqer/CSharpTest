@@ -10,6 +10,7 @@ using OopStorage.StorageClasses.Command;
 using System.Threading;
 using NLog;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace OopStorage
 {
@@ -18,6 +19,19 @@ namespace OopStorage
         static Logger logger = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
+            /*List<int> a = new List<int>();
+            Type myType = a.GetType();*/
+            Assembly asm = Assembly.LoadFile("C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.dll");
+            Type[] types = asm.GetTypes();
+            Type check = asm.GetType();
+            foreach (Type t in types)
+            {
+                if (t.Name.Contains("StringCollection") || t.Name.Contains("Generic"))
+                {
+                    Console.WriteLine(t.Name);
+                    check = t;
+                }
+            }
 
             //receiver - Storage.cs
             //command - ICommand.cs
@@ -134,15 +148,17 @@ namespace OopStorage
             () => Reports.WithoutDryStorages(Storages));
 
            
-            string path = @"D:\net";
+            string path = @"D:/net/";
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             if (!dirInfo.Exists)
             {
                 dirInfo.Create();
             }
-            if (Storages != null)
+            CSVtest.CSVwriter(ForAll, path);
+            CSVtest.CSVwriter(ForAll2, path);
+            /*if (Storages != null)
             {
-                using (StreamWriter streamWriter = new StreamWriter($@"{path}\test.csv", true, Encoding.GetEncoding("windows-1251")))
+                using (StreamWriter streamWriter = new StreamWriter($@"{ path}\test.csv", true, Encoding.GetEncoding("windows-1251")))
                 {
                     foreach (var storage in Storages)
                     {
@@ -150,10 +166,10 @@ namespace OopStorage
                     }
                 }
             }
-
+*/
             Task.WaitAll();
 
-            forMd5(); //функция для md5
+            /*forMd5();*/ //функция для md5
 
            
 
@@ -256,5 +272,7 @@ namespace OopStorage
         {
             logger.Debug($"All args: {args.Now.ToString()}, {args.Message}, {args.Adrs.City}, {args.Product.Name}");
         }
+
+
     }
 }
